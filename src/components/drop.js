@@ -244,3 +244,5 @@ document.addEventListener("mousedown", function (event) {
 // https://github.com/kirillmurashov/vue-drag-resize
 // https://vuejsexamples.com/vue-component-for-draggable-and-resizable-elements/
 // https://thewebdev.info/2020/07/26/top-vue-packages-for-adding-drag-and-drop-and-watching-resizing/
+
+// https://codesandbox.io/s/13qp7xk787?file=/src/App.vue
