@@ -1,18 +1,20 @@
 <script>
-//   defineProps(["isActive", "itemTitle", "itemSize"])
-//   defineEmits(["modal-window", "modal-content-window", "change-active"])
+
 export default {
-  props: ["isActive", "itemTitle"],
+  props: ["isActive", "itemTitle", "itemSize", "itemCoords"],
   emits: ["modal-window", "modal-content-window", "change-active"],
+
 };
 </script>
 
 <template>
 <!-- draggable,  draggable="true" -->
   <li
-    class="w-[200px] h-[200px] border-2 resize overflow-hidden cursor-grab  transition-colors max-w-[1070px]"
-    v-bind:class="{ 'border-black': isActive }"
+    class=" bg-white border-2 resize overflow-hidden cursor-grab draggable transition-colors max-w-[1070px] ball"
+    v-bind:class="{ 'border-black': isActive, 'z-10': isActive}"
     v-on:click="$emit('change-active', index)"
+    v-bind:style="{width: itemSize[0], height: itemSize[1], top: itemCoords[0], left: itemCoords[1]}"
+    draggable="true"
   >
     <div class="flex justify-end">
       {{ itemTitle }}

@@ -16,9 +16,7 @@
     >
       <h1 class="transition-all self-center">Modal Window Title</h1>
       <p class="transition-all">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui,
-        perferendis! <br />
-        Are you sure ?
+          Удаляем ?
       </p>
       <div class="transition-all self-end flex items-center gap-4">
         <button
