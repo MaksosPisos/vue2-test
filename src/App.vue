@@ -4,6 +4,7 @@ import ContainerList from "./components/ContainerList.vue";
 import ContainerWorkspace from "./components/ContainerWorkspace.vue";
 import ModalDel from "./components/ModalDel.vue";
 import ModalContent from "./components/ModalContent.vue";
+import Droppabble from "./components/Droppabble.vue";
 export default {
   components: {
     // регистрация компонентов
@@ -12,6 +13,7 @@ export default {
     ContainerWorkspace,
     ModalDel,
     ModalContent,
+    Droppabble
   },
   // создание переменных
   data() {
@@ -86,21 +88,21 @@ export default {
 <template>
   <div data-theme="light" class="min-h-screen bg-primary-content text-neutral">
     <div class="w-[1200px] mx-auto pt-4">
-      <Header
-        @add-container="addNewContainer"
-        @del-active-container="delActiveItem"
-      />
+      <Header @add-container="addNewContainer" @del-active-container="delActiveItem" />
 
       <div class="flex mt-4">
         <ul class="flex flex-col">
-          <ContainerList
-            v-for="(containerItem, index) in containerItems"
-            :itemTitle="containerItem.title"
-            :isActive="containerItem.active"
-            @change-active="changeActiveItem(index)"
-          />
+          <ContainerList v-for="(containerItem, index) in containerItems" :itemTitle="containerItem.title"
+            :isActive="containerItem.active" @change-active="changeActiveItem(index)" />
         </ul>
-        <ul class="flex flex-row flex-wrap mb-10 ">
+        <div class="">
+          <Droppabble v-for="(containerItem, index) in containerItems"
+            :itemSize="[containerItem.heigth, containerItem.width]"
+            :itemCoords="[containerItem.top, containerItem.left]" :itemTitle="containerItem.title"
+            @modal-window="delModalWindow(index)" @modal-content-window="modalCont(index)"
+            :isActive="containerItem.active" @change-active="changeActiveItem(index)" />
+        </div>
+        <!-- <ul class="flex flex-row flex-wrap mb-10 ">
           <ContainerWorkspace
             v-for="(containerItem, index) in containerItems"
             :itemSize="[containerItem.heigth, containerItem.width]"
@@ -111,14 +113,11 @@ export default {
             :isActive="containerItem.active"
             @change-active="changeActiveItem(index)"
           />
-        </ul>
+        </ul> -->
       </div>
     </div>
-    <ModalDel
-      :switchModal="modalDel"
-      @del-container-item="delContainerItem"
-      @close-modal="closeModal"
-    />
+    <ModalDel :switchModal="modalDel" @del-container-item="delContainerItem" @close-modal="closeModal" />
     <ModalContent :switchModal="modalContent" @close-modal="closeModal" />
+
   </div>
 </template>
