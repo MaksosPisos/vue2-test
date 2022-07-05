@@ -22,12 +22,12 @@ export default {
         {
           title: "Контейнер 1",
           active: true,
-          width: "200px",
-          heigth: "200px",
+          width: 200,
+          heigth: 200,
           top: 0,
           left: 0,
-          width: "200px",
-          heigth: "200px"
+          width: 200,
+          heigth: 200
         },
       ],
       modalDel: false,
@@ -42,13 +42,13 @@ export default {
       this.containerItems.push({
         title: `контейнер ${this.containerItems.length + 1}`,
         active: false,
-        width: "200px",
-        heigth: "200px",
-        top: "0",
-        left: "200px",
+        width: 200 ,
+        heigth: 200,
+        top: 0,
+        left: 200,
       });
     },
-    changeActiveItem: function (index) {
+    changeActiveItem(index) {
       this.containerItems[index].active = true;
       this.containerItems.forEach((item, i) => {
         if (i != index) {
@@ -56,12 +56,12 @@ export default {
         }
       });
     },
-    delModalWindow: function (index) {
+    delModalWindow(index) {
       this.modalDel = true;
       // state.todoItems.splice(index, 1);
       this.indexItem = index;
     },
-    modalCont: function (index) {
+    modalCont(index) {
       this.modalContent = true;
       console.log(index);
     },
@@ -84,30 +84,30 @@ export default {
       this.modalDel = false;
       this.modalContent = false;
     },
-    mousedown:
-      function (event, index) {
-        window.addEventListener("mousemove", mousemove);
-        window.addEventListener("mouseup", mouseup);
+    mousedown(event, index) {
+
         // 
         let prevX = event.clientX;
         let prevY = event.clientY;
-        console.log(prevX)
-        function mousemove(e) {
-          if (!this.isResizing) {
-
+        // let test = this;
+        // console.log(test.containerItems)
+        const mousemove = (e) => {
+            if (!this.isResizing) {
             let newX = prevX - e.clientX;
             let newY = prevY - e.clientY;
-           
-            this.containerItems[index].left = this.containerItems.left - newX + 'px'
-            this.containerItems[index].top = this.containerItems.top - newY + 'px'
+            this.containerItems[index].left -= newY
+            this.containerItems[index].top -= newX
             prevX = e.clientX;
             prevY = e.clientY;
           }
         }
-        function mouseup() {
+        const mouseup = () => {
           window.removeEventListener("mousemove", mousemove);
           window.removeEventListener("mouseup", mouseup);
         }
+
+        window.addEventListener("mousemove", mousemove);
+        window.addEventListener("mouseup", mouseup);
       },
 
   }
