@@ -24,8 +24,8 @@ export default {
           active: true,
           width: 200,
           heigth: 200,
-          top: 0,
-          left: 0,
+          top: 92,
+          left: 280,
           width: 200,
           heigth: 200
         },
@@ -34,21 +34,24 @@ export default {
       modalContent: false,
       indexItem: undefined,
       isResizing: false,
-      historyPrev: null,
-      historyNext: null,
+      historyPrev: [],
+      historyNext: [],
+      activeButtonNext: false,
+      activeButtonPrev: false,
     };
   },
   // 
   methods: {
     addNewContainer() {
-      this.historyPrev.push(this.containerItems)
+      this.historyPrev.push(this.containerItems.map(item => item))
+      this.activeButtonPrev = true
       this.containerItems.push({
         title: `контейнер ${this.containerItems.length + 1}`,
         active: false,
         width: 200,
         heigth: 200,
-        top: 0,
-        left: 200,
+        top: 92,
+        left: 500,
       });
     },
     changeActiveItem(index) {
@@ -69,13 +72,16 @@ export default {
       console.log(index);
     },
     delContainerItem() {
-      this.historyPrev.push(this.containerItems)
+      this.historyPrev.push(this.containerItems.map(item => item))
+      this.activeButtonPrev = true
       this.containerItems.splice(this.indexItem, 1);
       this.indexItem = undefined;
       // console.log(state.indexItem);
       this.closeModal();
     },
     delActiveItem() {
+      this.historyPrev.push(this.containerItems.map(item => item))
+      this.activeButtonPrev = true
       this.containerItems.forEach((item, index) => {
         if (item.active === true) {
           this.modalDel = true;
@@ -89,14 +95,33 @@ export default {
       this.modalContent = false;
     },
     prevHistory() {
-      console.log(this.historyPrev)
-    },
-    nextHistory() {
+      // if (this.historyPrev.length === 0) {
+      //   return this.activeButtonPrev = false
+      // }
+      this.activeButtonNext = true
+      this.historyNext.push(this.containerItems.map(item => item))
+      this.containerItems = this.historyPrev.pop(this.historyPrev.at(-1), 1)
+      if (this.historyPrev.length === 0) {
+        return this.activeButtonPrev = false
+      }
 
     },
+    nextHistory() {
+      // if (this.historyNext.length === 0) {
+      //   return this.activeButtonNext = false
+      // }
+      this.activeButtonPrev = true
+      this.historyPrev.push(this.containerItems.map(item => item))
+      this.containerItems = this.historyNext.pop(this.historyNext.at(-1), 1)
+      if (this.historyNext.length === 0) {
+        return this.activeButtonNext = false
+      }
+    },
     saveHistory() {
-      this.historyPrev = null;
-      this.historyNext = null;
+      this.activeButtonNext = false
+      this.activeButtonPrev = false
+      this.historyPrev = [];
+      this.historyNext = [];
     },
 
     mousedown(event, index) {
@@ -110,8 +135,8 @@ export default {
         if (!this.isResizing) {
           let newX = prevX - e.clientX;
           let newY = prevY - e.clientY;
-          this.containerItems[index].left -= newY
-          this.containerItems[index].top -= newX
+          this.containerItems[index].left -= newX
+          this.containerItems[index].top -= newY
           prevX = e.clientX;
           prevY = e.clientY;
         }
@@ -123,6 +148,7 @@ export default {
 
       window.addEventListener("mousemove", mousemove);
       window.addEventListener("mouseup", mouseup);
+
     },
 
   }
@@ -133,7 +159,8 @@ export default {
 
   <div data-theme="light" class="min-h-screen bg-primary-content text-neutral test">
     <div class="w-[1200px] mx-auto pt-4">
-      <Header @add-container="addNewContainer" @del-active-container="delActiveItem" @history-return="prevHistory" @history-next="nextHistory" @history-save="saveHistory" :btnNext-active="historyNext" :btnPrev-active="historyPrev" />
+      <Header @add-container="addNewContainer" @del-active-container="delActiveItem" @history-return="prevHistory"
+        @history-next="nextHistory" @history-save="saveHistory" :activeButton="[activeButtonPrev, activeButtonNext]" />
 
       <div class="flex mt-4">
         <ul class="flex flex-col">

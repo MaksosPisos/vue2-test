@@ -11,7 +11,7 @@ export default {
 
   <li class=" bg-white border-2  cursor-grab transition-colors max-w-[1070px] absolute"
     v-bind:class="{ 'border-black': isActive, 'z-10': isActive }" @click="$emit('change-active', index)" @mousedown="$emit('mousedown-res',$event, index)"
-     v-bind:style="{ width: itemSize[0] + 'px', height: itemSize[1] + 'px', top: itemCoords[1] + 'px', left: itemCoords[0] + 'px'}"
+     v-bind:style="{ width: itemSize[0] + 'px', height: itemSize[1] + 'px', top: itemCoords[0] + 'px', left: itemCoords[1] + 'px'}"
     >
     
     <div class="flex justify-end ">

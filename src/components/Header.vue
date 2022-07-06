@@ -1,17 +1,17 @@
 <script>
 // defineEmits(["add-container", "del-active-container"]);
 export default {
-  props: ["btnNext-active", "btnPrev-active"],
+  props: ["activeButton"],
 };
 </script>
 
 <template>
   <div class="bg-base-300 p-4">
     <div class="flex items-center gap-2">
-      <button class="text-xl " v-on:click="$emit('history-return')" :class="{'pointer-events-none': btnPrev-active === null, }">
+      <button class="text-xl" v-on:click="$emit('history-return')" :class="{'opacity-50': !activeButton[0], ' pointer-events-none': !activeButton[0]}">
         <i class="fa-solid fa-arrow-rotate-left"></i>
       </button>
-      <button class="text-xl" v-on:click="$emit('history-next')">
+      <button class="text-xl" v-on:click="$emit('history-next')" :class="{'opacity-50': !activeButton[1] , ' pointer-events-none': !activeButton[1]}">
         <i class="fa-solid fa-arrow-rotate-right"></i>
       </button>
       <button class="text-xl" v-on:click="$emit('history-save')">
