@@ -9,9 +9,9 @@ export default {
 <template>
   <!-- draggable,  draggable="true" -->
 
-  <li class=" bg-white border-2  cursor-grab transition-colors max-w-[1070px] absolute"
-    v-bind:class="{ 'border-black': isActive, 'z-10': isActive }" @click="$emit('change-active', index)"
-    @mousedown="$emit('mousedown-res', $event, index)"
+  <li class=" bg-white border-2  cursor-grab transition-colors max-w-[1070px] min-w-[50px] min-h-[50px] absolute select-none"
+    v-bind:class="{ 'border-black': isActive, 'z-10': isActive }"
+    @mousedown="$emit('mousedown-res', $event, index), $emit('change-active', index)"
     v-bind:style="{ width: itemSize[1] + 'px', height: itemSize[0] + 'px', top: itemCoords[0] + 'px', left: itemCoords[1] + 'px' }">
 
     <div class="flex justify-end ">
@@ -23,11 +23,11 @@ export default {
         <i class="fa-solid fa-trash-can"></i>
       </button>
     </div>
-    <div @mousedown="$emit('mousedown-resizing', $event, index)">
-      <div class="resizer ne"></div>
-      <div class="resizer nw"></div>
-      <div class="resizer sw"></div>
-      <div class="resizer se"></div>
+    <div @mousedown="$emit('mousedown-resizing', $event, index)" class="">
+      <div class="resizer ne  bg-base-300"  v-bind:class="{ 'bg-black': isActive, 'z-10': isActive }"></div>
+      <div class="resizer nw  bg-base-300"  v-bind:class="{ 'bg-black': isActive, 'z-10': isActive }"></div>
+      <div class="resizer sw  bg-base-300"  v-bind:class="{ 'bg-black': isActive, 'z-10': isActive }"></div>
+      <div class="resizer se  bg-base-300"  v-bind:class="{ 'bg-black': isActive, 'z-10': isActive }"></div>
     </div>
 
 

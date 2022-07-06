@@ -74,6 +74,7 @@ export default {
     delContainerItem() {
       this.historyPrev.push(this.containerItems.map(item => item))
       this.activeButtonPrev = true
+      this.containerItems[this.indexItem].active = false;
       this.containerItems.splice(this.indexItem, 1);
       this.indexItem = undefined;
       // console.log(state.indexItem);
@@ -137,10 +138,20 @@ export default {
         if (!this.isResizing) {
           let newX = prevX - e.clientX;
           let newY = prevY - e.clientY;
+          
           // this.historyPrev.push(this.containerItems.map(item => item))
           // this.activeButtonPrev = true
           this.containerItems[index].left -= newX
           this.containerItems[index].top -= newY
+          if (this.containerItems[index].left + this.containerItems[index].width >= 1200) {
+            this.containerItems[index].left = 1200 - this.containerItems[index].width
+          }
+          if(this.containerItems[index].left <= 140){
+            this.containerItems[index].left = 140
+          }
+          if (this.containerItems[index].top < 92) {
+            this.containerItems[index].top = 92
+          }
           prevX = e.clientX;
           prevY = e.clientY;
         }
@@ -163,23 +174,21 @@ export default {
       // console.log(prevX, prevY);
       console.log(`x${prevX}, y${prevY}`)
       const mousemove = (e) => {
-        if(currentResizer.classList.contains("se")){
-          console.log(this.containerItems[index].width);
-          this.containerItems[index].width = e.clientX - prevX;
-          this.containerItems[index].heigth = e.clientY - prevY;
-        }else if(currentResizer.classList.contains("sw")){
-           this.containerItems[index].width = e.clientX
-           this.containerItems[index].heigth = e.clientY - 110;
-           this.containerItems[index].left = e.clientX
-        }else if(currentResizer.classList.contains("ne")){
-           this.containerItems[index].width = e.clientX
-           this.containerItems[index].heigth = e.clientY - 110;
-           this.containerItems[index].top = e.clientY
-        }else {
-           this.containerItems[index].width = e.clientX
-           this.containerItems[index].heigth = e.clientY - 110;
-           this.containerItems[index].top = e.clientX
-           this.containerItems[index].left = e.clientX
+        let newX = e.clientX - prevX;
+        let newY = e.clientY - prevY;
+        // coords
+        if (currentResizer.classList.contains("se")) {
+          this.containerItems[index].width = newX + 200;
+          this.containerItems[index].heigth = newY + 200;
+        } else if (currentResizer.classList.contains("sw")) {
+          this.containerItems[index].width = 200 + newX
+          this.containerItems[index].heigth = newY + 200;
+        } else if (currentResizer.classList.contains("ne")) {
+          this.containerItems[index].width = newX + 200
+          this.containerItems[index].heigth = newY + 200;
+        } else {
+          this.containerItems[index].width = -newX + 200
+          this.containerItems[index].heigth = newY + 200;
         }
 
 
@@ -200,7 +209,7 @@ export default {
 <template>
 
   <div data-theme="light" class="min-h-screen bg-primary-content text-neutral test">
-    <div class="w-[1200px] mx-auto pt-4 relative">
+    <div class="max-w-[1200px] mx-auto pt-4 relative">
       <Header @add-container="addNewContainer" @del-active-container="delActiveItem" @history-return="prevHistory"
         @history-next="nextHistory" @history-save="saveHistory" :activeButton="[activeButtonPrev, activeButtonNext]" />
 
