@@ -25,7 +25,7 @@ export default {
           width: 200,
           heigth: 200,
           top: 92,
-          left: 280,
+          left: 140,
           width: 200,
           heigth: 200
         },
@@ -51,7 +51,7 @@ export default {
         width: 200,
         heigth: 200,
         top: 92,
-        left: 500,
+        left: 360,
       });
     },
     changeActiveItem(index) {
@@ -125,7 +125,9 @@ export default {
     },
 
     mousedown(event, index) {
-
+      //  this.historyPrev.push(this.containerItems.map(item => item))
+      //  console.log(this.containerItems[index].left, this.containerItems[index].top)
+      //  console.log(this.historyPrev);
       // 
       let prevX = event.clientX;
       let prevY = event.clientY;
@@ -135,6 +137,8 @@ export default {
         if (!this.isResizing) {
           let newX = prevX - e.clientX;
           let newY = prevY - e.clientY;
+          // this.historyPrev.push(this.containerItems.map(item => item))
+          // this.activeButtonPrev = true
           this.containerItems[index].left -= newX
           this.containerItems[index].top -= newY
           prevX = e.clientX;
@@ -150,7 +154,45 @@ export default {
       window.addEventListener("mouseup", mouseup);
 
     },
+    mousedownResizing(event, index) {
+      let currentResizer = event.target;
+      this.isResizing = true;
+      // console.log(currentResizer);
+      let prevX = event.clientX;
+      let prevY = event.clientY;
+      // console.log(prevX, prevY);
+      console.log(`x${prevX}, y${prevY}`)
+      const mousemove = (e) => {
+        if(currentResizer.classList.contains("se")){
+          console.log(this.containerItems[index].width);
+          this.containerItems[index].width = e.clientX - prevX;
+          this.containerItems[index].heigth = e.clientY - prevY;
+        }else if(currentResizer.classList.contains("sw")){
+           this.containerItems[index].width = e.clientX
+           this.containerItems[index].heigth = e.clientY - 110;
+           this.containerItems[index].left = e.clientX
+        }else if(currentResizer.classList.contains("ne")){
+           this.containerItems[index].width = e.clientX
+           this.containerItems[index].heigth = e.clientY - 110;
+           this.containerItems[index].top = e.clientY
+        }else {
+           this.containerItems[index].width = e.clientX
+           this.containerItems[index].heigth = e.clientY - 110;
+           this.containerItems[index].top = e.clientX
+           this.containerItems[index].left = e.clientX
+        }
 
+
+      }
+      const mouseup = () => {
+        window.removeEventListener("mousemove", mousemove);
+        window.removeEventListener("mouseup", mouseup);
+        this.isResizing = false;
+      }
+
+      window.addEventListener("mousemove", mousemove);
+      window.addEventListener("mouseup", mouseup);
+    },
   }
 }
 </script>
@@ -158,7 +200,7 @@ export default {
 <template>
 
   <div data-theme="light" class="min-h-screen bg-primary-content text-neutral test">
-    <div class="w-[1200px] mx-auto pt-4">
+    <div class="w-[1200px] mx-auto pt-4 relative">
       <Header @add-container="addNewContainer" @del-active-container="delActiveItem" @history-return="prevHistory"
         @history-next="nextHistory" @history-save="saveHistory" :activeButton="[activeButtonPrev, activeButtonNext]" />
 
@@ -168,12 +210,12 @@ export default {
             :isActive="containerItem.active" @change-active="changeActiveItem(index)" />
         </ul>
         <ul class="flex flex-row flex-wrap mb-10 ">
-          <ContainerWorkspace v-for="(containerItem, index) in containerItems"
+          <ContainerWorkspace v-for="(containerItem, index) in containerItems" :indexItem="index"
             :itemSize="[containerItem.heigth, containerItem.width]"
             :itemCoords="[containerItem.top, containerItem.left]" :itemTitle="containerItem.title"
             :isActive="containerItem.active" @modal-window="delModalWindow(index)"
             @modal-content-window="modalCont(index)" @change-active="changeActiveItem(index)"
-            @mousedown-res="mousedown($event, index)" />
+            @mousedown-res="mousedown($event, index)" @mousedown-resizing="mousedownResizing($event, index)" />
         </ul>
       </div>
     </div>

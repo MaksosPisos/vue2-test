@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* .item {
-    height: 200px;
-    width: 200px;
-    position: absolute;
-    top: 100px;
-    left: 100px;
-}
-
 .resizer {
     position: absolute;
     width: 10px;
@@ -37,4 +29,4 @@
     bottom: -1px;
     right: -1px;
     cursor: se-resize;
-} */
+}
