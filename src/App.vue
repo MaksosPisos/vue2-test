@@ -99,12 +99,16 @@ export default {
       // if (this.historyPrev.length === 0) {
       //   return this.activeButtonPrev = false
       // }
+     
+
       this.activeButtonNext = true
       this.historyNext.push(this.containerItems.map(item => item))
       this.containerItems = this.historyPrev.pop(this.historyPrev.at(-1), 1)
       if (this.historyPrev.length === 0) {
         return this.activeButtonPrev = false
       }
+      console.log(this.historyPrev);
+      console.log(this.containerItems);
 
     },
     nextHistory() {
@@ -138,7 +142,7 @@ export default {
         if (!this.isResizing) {
           let newX = prevX - e.clientX;
           let newY = prevY - e.clientY;
-          
+
           // this.historyPrev.push(this.containerItems.map(item => item))
           // this.activeButtonPrev = true
           this.containerItems[index].left -= newX
@@ -146,7 +150,7 @@ export default {
           if (this.containerItems[index].left + this.containerItems[index].width >= 1200) {
             this.containerItems[index].left = 1200 - this.containerItems[index].width
           }
-          if(this.containerItems[index].left <= 140){
+          if (this.containerItems[index].left <= 140) {
             this.containerItems[index].left = 140
           }
           if (this.containerItems[index].top < 92) {
@@ -178,20 +182,27 @@ export default {
         let newY = e.clientY - prevY;
         // coords
         if (currentResizer.classList.contains("se")) {
+          this.historyPrev.push(this.containerItems.map(item => item))
+          this.activeButtonPrev = true
+
           this.containerItems[index].width = newX + 200;
           this.containerItems[index].heigth = newY + 200;
         } else if (currentResizer.classList.contains("sw")) {
-          this.containerItems[index].width = 200 + newX
+          this.historyPrev.push(this.containerItems.map(item => item))
+          this.activeButtonPrev = true
+          this.containerItems[index].width = 200 + newX;
           this.containerItems[index].heigth = newY + 200;
         } else if (currentResizer.classList.contains("ne")) {
-          this.containerItems[index].width = newX + 200
+          this.historyPrev.push(this.containerItems.map(item => item))
+          this.activeButtonPrev = true
+          this.containerItems[index].width = newX + 200;
           this.containerItems[index].heigth = newY + 200;
         } else {
-          this.containerItems[index].width = -newX + 200
+          this.historyPrev.push(this.containerItems.map(item => item))
+          this.activeButtonPrev = true
+          this.containerItems[index].width = newX + 200
           this.containerItems[index].heigth = newY + 200;
         }
-
-
       }
       const mouseup = () => {
         window.removeEventListener("mousemove", mousemove);
@@ -200,6 +211,8 @@ export default {
       }
 
       window.addEventListener("mousemove", mousemove);
+      this.historyPrev.push(this.containerItems.map(item => item))
+      console.log(this.historyPrev);
       window.addEventListener("mouseup", mouseup);
     },
   }
