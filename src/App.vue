@@ -132,7 +132,6 @@ export default {
 
     mousedown(event, index) {
       this.dummyArr = JSON.parse(JSON.stringify(this.containerItems.map(item => item)))
-      console.log(this.testArr);
       let prevX = event.clientX;
       let prevY = event.clientY;
 
@@ -140,7 +139,7 @@ export default {
         if (!this.isResizing) {
           let newX = prevX - e.clientX;
           let newY = prevY - e.clientY;
- 
+
           // if (this.containerItems[index].left != this.containerItems[index].left - newX || this.containerItems[index].top != this.containerItems[index].top - newY) {
           //   this.historyPrev.push(JSON.parse(JSON.stringify(this.containerItems.map(item => item))))
           //   this.activeButtonPrev = true
@@ -162,9 +161,8 @@ export default {
         }
       }
       const mouseup = () => {
-        console.log(this.containerItems[index].top === [index].top && this.containerItems[index].left === this.dummyArr[index].left);
         if (this.containerItems[index].top === this.dummyArr[index].top && this.containerItems[index].left === this.dummyArr[index].left) {
-            console.log('not change');
+          console.log('not change');
         } else {
           this.historyPrev.push(this.dummyArr)
           this.activeButtonPrev = true
@@ -179,47 +177,46 @@ export default {
 
     },
     mousedownResizing(event, index) {
-      this.historyPrev.push(JSON.parse(JSON.stringify(this.containerItems.map(item => item))))
+      this.dummyArr = JSON.parse(JSON.stringify(this.containerItems.map(item => item)))
       let currentResizer = event.target;
       this.isResizing = true;
-      // console.log(currentResizer);
       let prevX = event.clientX;
       let prevY = event.clientY;
-      // console.log(prevX, prevY);
       const mousemove = (e) => {
-        // let newX = ;
-        // let newY = ;
-        // coords
-
         if (currentResizer.classList.contains("se")) {
-          this.containerItems[index].width += e.clientX - JSON.parse(JSON.stringify(this.containerItems[index].width));
-          this.containerItems[index].heigth += e.clientY - JSON.parse(JSON.stringify(this.containerItems[index].heigth));
+          this.containerItems[index].width = JSON.parse(JSON.stringify(this.containerItems[index].width)) - (prevX - e.clientX)
+          this.containerItems[index].heigth = JSON.parse(JSON.stringify(this.containerItems[index].heigth)) - (prevY - e.clientY)
         } else if (currentResizer.classList.contains("sw")) {
-
-          this.containerItems[index].width = 200 + newX;
-          this.containerItems[index].heigth = newY + 200;
+          this.containerItems[index].width = JSON.parse(JSON.stringify(this.containerItems[index].width)) + (prevX - e.clientX);
+          this.containerItems[index].heigth = JSON.parse(JSON.stringify(this.containerItems[index].heigth)) - (prevY - e.clientY);
+          this.containerItems[index].left = JSON.parse(JSON.stringify(this.containerItems[index].left)) - (prevX - e.clientX);
         } else if (currentResizer.classList.contains("ne")) {
-
-          this.containerItems[index].width = newX + 200;
-          this.containerItems[index].heigth = newY + 200;
+          this.containerItems[index].width = JSON.parse(JSON.stringify(this.containerItems[index].width)) - (prevX - e.clientX);
+          this.containerItems[index].heigth = JSON.parse(JSON.stringify(this.containerItems[index].heigth)) + (prevY - e.clientY);
+          this.containerItems[index].top = JSON.parse(JSON.stringify(this.containerItems[index].top)) - (prevY - e.clientY)
         } else {
-
-          this.containerItems[index].width = newX + 200
-          this.containerItems[index].heigth = newY + 200;
+          this.containerItems[index].width = JSON.parse(JSON.stringify(this.containerItems[index].width)) + (prevX - e.clientX)
+          this.containerItems[index].heigth = JSON.parse(JSON.stringify(this.containerItems[index].heigth)) + (prevY - e.clientY);
+          this.containerItems[index].left = JSON.parse(JSON.stringify(this.containerItems[index].left)) - (prevY - e.clientY)
+          this.containerItems[index].top = JSON.parse(JSON.stringify(this.containerItems[index].top)) - (prevX - e.clientX)
         }
         prevX = e.clientX;
         prevY = e.clientY;
       }
       const mouseup = () => {
-        this.activeButtonPrev = true
+        if (this.containerItems[index].width === this.dummyArr[index].width && this.containerItems[index].heigth === this.dummyArr[index].heigth) {
+          console.log('not change');
+        } else {
+          this.historyPrev.push(this.dummyArr)
+          this.activeButtonPrev = true
+          console.log('change');
+        }
         window.removeEventListener("mousemove", mousemove);
         window.removeEventListener("mouseup", mouseup);
         this.isResizing = false;
       }
 
       window.addEventListener("mousemove", mousemove);
-      this.historyPrev.push(this.containerItems.map(item => item))
-      console.log(this.historyPrev);
       window.addEventListener("mouseup", mouseup);
     },
   }

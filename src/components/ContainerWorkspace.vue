@@ -9,7 +9,7 @@ export default {
 <template>
   <!-- draggable,  draggable="true" -->
 
-  <li class=" bg-white border-2  cursor-grab transition-colors max-w-[1060px] min-w-[50px] min-h-[50px] absolute select-none"
+  <li class=" bg-white border-2  cursor-grab transition-colors max-w-[1060px] absolute select-none"
     v-bind:class="{ 'border-black': isActive, 'z-10': isActive }"
     @mousedown="$emit('mousedown-res', $event, index), $emit('change-active', index)"
     v-bind:style="{ width: itemSize[1] + 'px', height: itemSize[0] + 'px', top: itemCoords[0] + 'px', left: itemCoords[1] + 'px' }">
