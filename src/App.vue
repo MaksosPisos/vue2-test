@@ -38,6 +38,7 @@ export default {
       historyNext: [],
       activeButtonNext: false,
       activeButtonPrev: false,
+      dummyArr: [],
     };
   },
   // 
@@ -130,23 +131,20 @@ export default {
     },
 
     mousedown(event, index) {
-      //  this.historyPrev.push(this.containerItems.map(item => item))
-      //  console.log(this.containerItems[index].left, this.containerItems[index].top)
-      //  console.log(this.historyPrev);
-
+      this.dummyArr = JSON.parse(JSON.stringify(this.containerItems.map(item => item)))
+      console.log(this.testArr);
       let prevX = event.clientX;
       let prevY = event.clientY;
-      console.log(prevX, prevY);
-      // let test = this;
-      // console.log(test.containerItems)
+
       const mousemove = (e) => {
         if (!this.isResizing) {
           let newX = prevX - e.clientX;
           let newY = prevY - e.clientY;
-          if (this.containerItems[index].left != this.containerItems[index].left - newX || this.containerItems[index].top != this.containerItems[index].top - newY) {
-            this.historyPrev.push(JSON.parse(JSON.stringify(this.containerItems.map(item => item))))
-            this.activeButtonPrev = true
-          }
+ 
+          // if (this.containerItems[index].left != this.containerItems[index].left - newX || this.containerItems[index].top != this.containerItems[index].top - newY) {
+          //   this.historyPrev.push(JSON.parse(JSON.stringify(this.containerItems.map(item => item))))
+          //   this.activeButtonPrev = true
+          // }
           this.containerItems[index].left -= newX
           this.containerItems[index].top -= newY
 
@@ -164,12 +162,14 @@ export default {
         }
       }
       const mouseup = () => {
-        // console.log(this.containerItems[index].top === this.historyPrev.at(-1)[index].top && this.containerItems[index].left === this.historyPrev.at(-1)[[index]].left);
-        // if (this.containerItems[index].top === this.historyPrev.at(-1)[index].top && this.containerItems[index].left === this.historyPrev.at(-1)[index].left) {
-        //   console.log(this.historyPrev.splice(this.historyPrev.at(-1), 1));
-        // } else {
-        //   this.activeButtonPrev = true
-        // }
+        console.log(this.containerItems[index].top === [index].top && this.containerItems[index].left === this.dummyArr[index].left);
+        if (this.containerItems[index].top === this.dummyArr[index].top && this.containerItems[index].left === this.dummyArr[index].left) {
+            console.log('not change');
+        } else {
+          this.historyPrev.push(this.dummyArr)
+          this.activeButtonPrev = true
+          console.log('change');
+        }
         window.removeEventListener("mousemove", mousemove);
         window.removeEventListener("mouseup", mouseup);
       }
