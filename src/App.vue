@@ -99,7 +99,7 @@ export default {
       // if (this.historyPrev.length === 0) {
       //   return this.activeButtonPrev = false
       // }
-     
+
 
       this.activeButtonNext = true
       this.historyNext.push(this.containerItems.map(item => item))
@@ -143,8 +143,8 @@ export default {
           let newX = prevX - e.clientX;
           let newY = prevY - e.clientY;
 
-          // this.historyPrev.push(this.containerItems.map(item => item))
-          // this.activeButtonPrev = true
+          this.historyPrev.push(JSON.parse(JSON.stringify(this.containerItems.map(item => item))))
+          this.activeButtonPrev = true
           this.containerItems[index].left -= newX
           this.containerItems[index].top -= newY
           if (this.containerItems[index].left + this.containerItems[index].width >= 1200) {
@@ -178,15 +178,16 @@ export default {
       // console.log(prevX, prevY);
       console.log(`x${prevX}, y${prevY}`)
       const mousemove = (e) => {
-        let newX = e.clientX - prevX;
-        let newY = e.clientY - prevY;
+        // let newX = ;
+        // let newY = ;
         // coords
+        this.historyPrev.push(JSON.parse(JSON.stringify(this.containerItems.map(item => item))))
+        this.activeButtonPrev = true
         if (currentResizer.classList.contains("se")) {
-          this.historyPrev.push(this.containerItems.map(item => item))
-          this.activeButtonPrev = true
 
-          this.containerItems[index].width = newX + 200;
-          this.containerItems[index].heigth = newY + 200;
+
+          this.containerItems[index].width += e.clientX - JSON.parse(JSON.stringify(this.containerItems[index].width));
+          this.containerItems[index].heigth += e.clientY - JSON.parse(JSON.stringify(this.containerItems[index].heigth));
         } else if (currentResizer.classList.contains("sw")) {
           this.historyPrev.push(this.containerItems.map(item => item))
           this.activeButtonPrev = true
@@ -203,6 +204,8 @@ export default {
           this.containerItems[index].width = newX + 200
           this.containerItems[index].heigth = newY + 200;
         }
+        prevX = e.clientX;
+        prevY = e.clientY;
       }
       const mouseup = () => {
         window.removeEventListener("mousemove", mousemove);
