@@ -194,11 +194,11 @@ export default {
           this.containerItems[index].width = JSON.parse(JSON.stringify(this.containerItems[index].width)) - (prevX - e.clientX);
           this.containerItems[index].heigth = JSON.parse(JSON.stringify(this.containerItems[index].heigth)) + (prevY - e.clientY);
           this.containerItems[index].top = JSON.parse(JSON.stringify(this.containerItems[index].top)) - (prevY - e.clientY)
-        } else {
+        } else if (currentResizer.classList.contains("nw")){
           this.containerItems[index].width = JSON.parse(JSON.stringify(this.containerItems[index].width)) + (prevX - e.clientX)
           this.containerItems[index].heigth = JSON.parse(JSON.stringify(this.containerItems[index].heigth)) + (prevY - e.clientY);
-          this.containerItems[index].left = JSON.parse(JSON.stringify(this.containerItems[index].left)) - (prevY - e.clientY)
-          this.containerItems[index].top = JSON.parse(JSON.stringify(this.containerItems[index].top)) - (prevX - e.clientX)
+          this.containerItems[index].left = JSON.parse(JSON.stringify(this.containerItems[index].left)) - (prevX - e.clientX)
+          this.containerItems[index].top = JSON.parse(JSON.stringify(this.containerItems[index].top)) - (prevY - e.clientY)
         }
         prevX = e.clientX;
         prevY = e.clientY;
