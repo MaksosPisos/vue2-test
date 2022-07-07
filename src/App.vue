@@ -133,7 +133,7 @@ export default {
       //  this.historyPrev.push(this.containerItems.map(item => item))
       //  console.log(this.containerItems[index].left, this.containerItems[index].top)
       //  console.log(this.historyPrev);
-      // 
+      this.historyPrev.push(JSON.parse(JSON.stringify(this.containerItems.map(item => item))))
       let prevX = event.clientX;
       let prevY = event.clientY;
       // let test = this;
@@ -143,8 +143,7 @@ export default {
           let newX = prevX - e.clientX;
           let newY = prevY - e.clientY;
 
-          this.historyPrev.push(JSON.parse(JSON.stringify(this.containerItems.map(item => item))))
-          this.activeButtonPrev = true
+
           this.containerItems[index].left -= newX
           this.containerItems[index].top -= newY
           if (this.containerItems[index].left + this.containerItems[index].width >= 1200) {
@@ -161,6 +160,7 @@ export default {
         }
       }
       const mouseup = () => {
+        this.activeButtonPrev = true
         window.removeEventListener("mousemove", mousemove);
         window.removeEventListener("mouseup", mouseup);
       }
@@ -170,6 +170,7 @@ export default {
 
     },
     mousedownResizing(event, index) {
+      this.historyPrev.push(JSON.parse(JSON.stringify(this.containerItems.map(item => item))))
       let currentResizer = event.target;
       this.isResizing = true;
       // console.log(currentResizer);
@@ -181,26 +182,20 @@ export default {
         // let newX = ;
         // let newY = ;
         // coords
-        this.historyPrev.push(JSON.parse(JSON.stringify(this.containerItems.map(item => item))))
-        this.activeButtonPrev = true
+
         if (currentResizer.classList.contains("se")) {
-
-
           this.containerItems[index].width += e.clientX - JSON.parse(JSON.stringify(this.containerItems[index].width));
           this.containerItems[index].heigth += e.clientY - JSON.parse(JSON.stringify(this.containerItems[index].heigth));
         } else if (currentResizer.classList.contains("sw")) {
-          this.historyPrev.push(this.containerItems.map(item => item))
-          this.activeButtonPrev = true
+
           this.containerItems[index].width = 200 + newX;
           this.containerItems[index].heigth = newY + 200;
         } else if (currentResizer.classList.contains("ne")) {
-          this.historyPrev.push(this.containerItems.map(item => item))
-          this.activeButtonPrev = true
+
           this.containerItems[index].width = newX + 200;
           this.containerItems[index].heigth = newY + 200;
         } else {
-          this.historyPrev.push(this.containerItems.map(item => item))
-          this.activeButtonPrev = true
+
           this.containerItems[index].width = newX + 200
           this.containerItems[index].heigth = newY + 200;
         }
@@ -208,6 +203,7 @@ export default {
         prevY = e.clientY;
       }
       const mouseup = () => {
+        this.activeButtonPrev = true
         window.removeEventListener("mousemove", mousemove);
         window.removeEventListener("mouseup", mouseup);
         this.isResizing = false;
