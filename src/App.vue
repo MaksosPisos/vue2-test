@@ -133,19 +133,23 @@ export default {
       //  this.historyPrev.push(this.containerItems.map(item => item))
       //  console.log(this.containerItems[index].left, this.containerItems[index].top)
       //  console.log(this.historyPrev);
-      this.historyPrev.push(JSON.parse(JSON.stringify(this.containerItems.map(item => item))))
+
       let prevX = event.clientX;
       let prevY = event.clientY;
+      console.log(prevX, prevY);
       // let test = this;
       // console.log(test.containerItems)
       const mousemove = (e) => {
         if (!this.isResizing) {
           let newX = prevX - e.clientX;
           let newY = prevY - e.clientY;
-
-
+          if (this.containerItems[index].left != this.containerItems[index].left - newX || this.containerItems[index].top != this.containerItems[index].top - newY) {
+            this.historyPrev.push(JSON.parse(JSON.stringify(this.containerItems.map(item => item))))
+            this.activeButtonPrev = true
+          }
           this.containerItems[index].left -= newX
           this.containerItems[index].top -= newY
+
           if (this.containerItems[index].left + this.containerItems[index].width >= 1200) {
             this.containerItems[index].left = 1200 - this.containerItems[index].width
           }
@@ -160,7 +164,12 @@ export default {
         }
       }
       const mouseup = () => {
-        this.activeButtonPrev = true
+        // console.log(this.containerItems[index].top === this.historyPrev.at(-1)[index].top && this.containerItems[index].left === this.historyPrev.at(-1)[[index]].left);
+        // if (this.containerItems[index].top === this.historyPrev.at(-1)[index].top && this.containerItems[index].left === this.historyPrev.at(-1)[index].left) {
+        //   console.log(this.historyPrev.splice(this.historyPrev.at(-1), 1));
+        // } else {
+        //   this.activeButtonPrev = true
+        // }
         window.removeEventListener("mousemove", mousemove);
         window.removeEventListener("mouseup", mouseup);
       }
@@ -177,7 +186,6 @@ export default {
       let prevX = event.clientX;
       let prevY = event.clientY;
       // console.log(prevX, prevY);
-      console.log(`x${prevX}, y${prevY}`)
       const mousemove = (e) => {
         // let newX = ;
         // let newY = ;
